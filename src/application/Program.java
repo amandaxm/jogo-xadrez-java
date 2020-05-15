@@ -1,12 +1,15 @@
 package application;
 
-import tabuleiro.Tabuleiro;
+import xadrez.PartidaXadrez;
 
 public class Program {
 
 	public static void main(String[] args) {
 
-		Tabuleiro tab = new Tabuleiro(8,8);
+		PartidaXadrez partidaXadrez = new PartidaXadrez();
+		
+		//funcao para imprimir as pecas dessa partida
+		Interface.imprimeTabuleiro(partidaXadrez.getPecas());
 	}
 
 }
