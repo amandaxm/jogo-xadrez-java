@@ -1,5 +1,8 @@
 package xadrez;
 
+import peca.xadrez.Rei;
+import peca.xadrez.Torre;
+import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
 
 public class PartidaXadrez {
@@ -7,7 +10,9 @@ public class PartidaXadrez {
 	private Tabuleiro tabuleiro;
 	public PartidaXadrez() {
 		//dizer o tamanho
+		//crio o tabuleiro e inicia o jogo
 		tabuleiro = new Tabuleiro(8,8);
+		iniciarJogo();
 	}
 	//retornar uma matriz de peças de xadrez
 	//correspondente a essa partida
@@ -22,5 +27,12 @@ public class PartidaXadrez {
 		}
 	}
 	return matriz;
+	}
+	private void iniciarJogo() {
+		tabuleiro.lugarPeca(new Torre(tabuleiro, Color.WHITE), new Posicao(2,1));
+		tabuleiro.lugarPeca(new Rei(tabuleiro, Color.BLACK), new Posicao(0,4));
+		tabuleiro.lugarPeca(new Rei(tabuleiro, Color.BLACK), new Posicao(7,4));
+
+		
 	}
 }

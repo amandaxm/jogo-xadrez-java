@@ -40,4 +40,14 @@ public class Tabuleiro {
 		
 		
 	}
+	public void lugarPeca(Piece peca, Posicao posicao) {
+	//essa matriz na posição dada atribuir a peca no tabuleiro
+	pecas[posicao.getLinha()][posicao.getColuna()] = peca;
+	//tirar da posicao nulo
+	peca.posicao= posicao;//acessivel diretamente protected classe no mesmo pacote acesso livre
+	
+	
+		
+		
+	}
 }
