@@ -56,7 +56,12 @@ public class PartidaXadrez {
 	
 	private void posicaoDestinoValida(Posicao posicao) {
 		if(!tabuleiro.eUmaPeca(posicao)) {
-			throw new ExcecaoXadrez("Não existe um peca aqui");
+			throw new ExcecaoXadrez("Nao existe um peca aqui");
+			
+		}//se nao tiver nenhum movimento possivel
+		if(!tabuleiro.piece(posicao).eUmMovimentoPossivel()) {
+			throw new ExcecaoXadrez("Nao existe movimentos possiveis para essa peca");
+			
 			
 		}
 		
