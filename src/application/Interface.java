@@ -1,9 +1,14 @@
 package application;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import xadrez.Color;
+
 //import com.sun.prism.paint.Color;
 
 import xadrez.PecaXadrez;
-import xadrez.Color;
+import xadrez.PosicaoXadrez;
 
 public class Interface {
 
@@ -43,6 +48,21 @@ public class Interface {
 
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+	public static PosicaoXadrez lerPosicao(Scanner sc) {
+		try {
+			// letra e numero a2
+			String s = sc.nextLine();
+			char coluna = s.charAt(0);
+			int linha = Integer.parseInt(s.substring(1));// pega a partir do segundo caracter
+			return new PosicaoXadrez(coluna, linha);
+
+		} catch (RuntimeException e) {// qualquer coisa que acontecer
+			throw new InputMismatchException("Erro lendo a posição de Xadrez, valores válidos são de a1 até h8");// erro entrada de dado
+																													
+		}
+
+	}
+
 	public static void imprimeTabuleiro(PecaXadrez[][] pecas) {
 		for (int i = 0; i < pecas.length; i++) {
 
@@ -67,8 +87,7 @@ public class Interface {
 		if (peca == null) {
 
 			System.out.print("-");
-		}
-		else {
+		} else {
 			if (peca.getColor() == Color.WHITE) {
 				System.out.print(ANSI_WHITE + peca + ANSI_RESET);
 			}

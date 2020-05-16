@@ -28,33 +28,32 @@ public class Tabuleiro {
 
 	public Piece piece(int linha, int coluna) {
 		// retorna matriz pecas na linha e coluna
-		if(!posicaoExistente(linha,coluna)) {
-			//se essa posição nao exitir
+		if (!posicaoExistente(linha, coluna)) {
+			// se essa posição nao exitir
 			throw new ExcecaoTabuleiro("Posição não existe no tabuleiro");
 		}
-		
+
 		return pecas[linha][coluna];
 
 	}
 
 	public Piece piece(Posicao posicao) {
-		if(!posicaoExistente(posicao)) {
-			//se essa posição nao exitir
+		if (!posicaoExistente(posicao)) {
+			// se essa posição nao exitir
 			throw new ExcecaoTabuleiro("Posição não existe no tabuleiro");
 		}
-		
-		
+
 		return pecas[posicao.getLinha()][posicao.getColuna()];
 
 	}
 
 	public void lugarPeca(Piece peca, Posicao posicao) {
-		//testar se já existe uma peça nessa posição
-		if(eUmaPeca(posicao)) {
-			throw new ExcecaoTabuleiro("Já existe uma peça aqui!" +posicao);
-			
+		// testar se já existe uma peça nessa posição
+		if (eUmaPeca(posicao)) {
+			throw new ExcecaoTabuleiro("Já existe uma peça aqui!" + posicao);
+
 		}
-		
+
 		// essa matriz na posição dada atribuir a peca no tabuleiro
 		pecas[posicao.getLinha()][posicao.getColuna()] = peca;
 		// tirar da posicao nulo
@@ -62,6 +61,29 @@ public class Tabuleiro {
 
 	}
 
+	public Piece removePiece(Posicao position) {
+
+		if (!posicaoExistente(position)) {
+
+			throw new ExcecaoTabuleiro("Posicao nao tem no tabuleiro");
+
+		}
+
+		if (piece(position) == null) {
+
+			return null;
+
+		}
+
+		Piece aux = piece(position);
+
+		aux.posicao = null;
+
+		pecas[position.getLinha()][position.getColuna()] = null;
+
+		return aux;
+
+	}
 	private boolean posicaoExistente(int linha, int coluna) {
 		// tem que estar dentro do tabuleiro
 		// maior que zero e menor que a quantidade de col/lin do tabuleiro
@@ -74,12 +96,12 @@ public class Tabuleiro {
 	}
 
 	public boolean eUmaPeca(Posicao posicao) {
-		//verificar se a posição existe primeiro
-		if(!posicaoExistente(posicao)) {
-			//se essa posição nao exitir
+		// verificar se a posição existe primeiro
+		if (!posicaoExistente(posicao)) {
+			// se essa posição nao exitir
 			throw new ExcecaoTabuleiro("Posição não existe no tabuleiro");
 		}
-		
+
 		return piece(posicao) != null;// se posicao diferente de null
 		// tem uma peca nessa posição
 
