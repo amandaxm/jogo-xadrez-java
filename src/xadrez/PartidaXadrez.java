@@ -8,13 +8,25 @@ import tabuleiro.Tabuleiro;
 
 public class PartidaXadrez {
 	// coração do jogo
+	private int vez;
+	private Color atualJogador;
 	private Tabuleiro tabuleiro;
 
 	public PartidaXadrez() {
 		// dizer o tamanho
 		// crio o tabuleiro e inicia o jogo
 		tabuleiro = new Tabuleiro(8, 8);
+		vez=1;
+		atualJogador = Color.WHITE;
 		iniciarJogo();
+	}
+	
+	public int gerVez() {
+		return vez;
+	}
+	
+	public Color atualJogador() {
+		return atualJogador;
 	}
 
 	// retornar uma matriz de peças de xadrez
@@ -47,6 +59,8 @@ public class PartidaXadrez {
 		posicaoDestinoValida(atual,destino);
 		
 		Piece pecaCapturada = fazerMovimento(atual,destino);
+		
+		nextTurn();
 		return (PecaXadrez)pecaCapturada;
 		
 		//validar posicao
@@ -66,7 +80,16 @@ public class PartidaXadrez {
 		if(!tabuleiro.eUmaPeca(posicao)) {
 			throw new ExcecaoXadrez("Nao existe um peca aqui");
 			
-		}//se nao tiver nenhum movimento possivel
+		}
+		
+		if(atualJogador != ((PecaXadrez)tabuleiro.piece(posicao)).getColor()) {
+			//peca adversaria, nao pode move-la
+			throw new ExcecaoXadrez("A peca escolhida nao e sua");
+			
+		}
+		
+		//se nao tiver nenhum movimento possivel
+		
 		if(!tabuleiro.piece(posicao).eUmMovimentoPossivel()) {
 			throw new ExcecaoXadrez("Nao existe movimentos possiveis para essa peca");
 			
@@ -92,7 +115,12 @@ public class PartidaXadrez {
 			
 		}
 	
-	} 
+	}
+	private void nextTurn() {
+		vez++;
+		atualJogador =(atualJogador == Color.WHITE) ? Color.BLACK : Color.WHITE;
+		
+	}
 	
 	
 	private void placeNewPiece(char coluna, int linha, PecaXadrez peca) {

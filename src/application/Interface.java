@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import xadrez.Color;
+import xadrez.PartidaXadrez;
 
 //import com.sun.prism.paint.Color;
 
@@ -56,9 +57,8 @@ public class Interface {
 
 		System.out.flush();
 
-	}	
+	}
 
-	
 	public static PosicaoXadrez lerPosicao(Scanner sc) {
 		try {
 			// letra e numero a2
@@ -68,10 +68,20 @@ public class Interface {
 			return new PosicaoXadrez(coluna, linha);
 
 		} catch (RuntimeException e) {// qualquer coisa que acontecer
-			throw new InputMismatchException("Erro lendo a posição de Xadrez, valores válidos são de a1 até h8");// erro entrada de dado
-																													
+			throw new InputMismatchException("Erro lendo a posição de Xadrez, valores válidos são de a1 até h8");// erro
+
 		}
 
+	}
+	public static void imprimirPartida(PartidaXadrez partidaXadrez) {
+		
+		imprimeTabuleiro(partidaXadrez.getPecas());
+		System.out.println();
+		System.out.println("Jogada: "+ partidaXadrez.gerVez());
+		System.out.println("Aguardando jogador: "+ partidaXadrez.atualJogador());
+		
+
+		
 	}
 
 	public static void imprimeTabuleiro(PecaXadrez[][] pecas) {
@@ -113,8 +123,6 @@ public class Interface {
 
 	}
 
-
-
 	private static void imprimePeca(PecaXadrez piece, boolean background) {
 
 		if (background) {
@@ -123,29 +131,28 @@ public class Interface {
 
 		}
 
-    	if (piece == null) {
+		if (piece == null) {
 
-            System.out.print("-" + ANSI_RESET);
+			System.out.print("-" + ANSI_RESET);
+		}
 
-        }
+		else {
 
-        else {
+			if (piece.getColor() == Color.WHITE) {
 
-            if (piece.getColor() == Color.WHITE) {
+				System.out.print(ANSI_WHITE + piece + ANSI_RESET);
 
-                System.out.print(ANSI_WHITE + piece + ANSI_RESET);
+			}
 
-            }
+			else {
 
-            else {
+				System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
 
-                System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+			}
 
-            }
+		}
 
-        }
-
-        System.out.print(" ");
+		System.out.print(" ");
 
 	}
 }

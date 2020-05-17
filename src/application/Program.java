@@ -19,7 +19,7 @@ public class Program {
 		while (true) {
 			try {
 				Interface.clearScreen();
-				Interface.imprimeTabuleiro(partidaXadrez.getPecas());
+				Interface.imprimirPartida(partidaXadrez);
 				System.out.println();
 				System.out.println("Origem: ");
 				PosicaoXadrez origem = Interface.lerPosicao(sc);
