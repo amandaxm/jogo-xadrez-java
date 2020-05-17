@@ -90,7 +90,7 @@ public class Tabuleiro {
 		return linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas;
 	}
 
-	private boolean posicaoExistente(Posicao posicao) {
+	public boolean posicaoExistente(Posicao posicao) {
 //testa se existe
 		return posicaoExistente(posicao.getLinha(), posicao.getColuna());
 	}

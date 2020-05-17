@@ -27,6 +27,13 @@ public class Posicao {
 	public void setColuna(Integer coluna) {
 		this.coluna = coluna;
 	}
+	//atualizar os valores de uma posicao
+	public void setValues(int linha, int coluna) {
+		this.coluna=coluna;
+		this.linha=linha;
+		
+		
+	}
 
 	@Override
 	public String toString() {// retorna a posição

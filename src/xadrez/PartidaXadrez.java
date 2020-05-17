@@ -32,12 +32,20 @@ public class PartidaXadrez {
 		return matriz;
 	}
 	
-	
+	public boolean [][] possibleMoves(PosicaoXadrez posicaoOrigem){
+		Posicao posicao = posicaoOrigem.toPosition();
+		//validar posicao
+		//imprimir posicao de 
+		posicaoOrigemValida(posicao);
+		return tabuleiro.piece(posicao).movimentosPossiveis();
+	}
 	public PecaXadrez executarMovimento(PosicaoXadrez atualPosicao, PosicaoXadrez posicaoDestino) {
 		
 		Posicao atual = atualPosicao.toPosition();
 		Posicao destino = posicaoDestino.toPosition();
-		posicaoDestinoValida(atual);
+		posicaoOrigemValida(atual);
+		posicaoDestinoValida(atual,destino);
+		
 		Piece pecaCapturada = fazerMovimento(atual,destino);
 		return (PecaXadrez)pecaCapturada;
 		
@@ -54,7 +62,7 @@ public class PartidaXadrez {
 		return pecaCapturada;
 	}
 	
-	private void posicaoDestinoValida(Posicao posicao) {
+	private void posicaoOrigemValida(Posicao posicao) {
 		if(!tabuleiro.eUmaPeca(posicao)) {
 			throw new ExcecaoXadrez("Nao existe um peca aqui");
 			
@@ -66,6 +74,26 @@ public class PartidaXadrez {
 		}
 		
 	}
+	
+	public boolean[][] movimentosPossiveis (PosicaoXadrez sourcePosition) {
+
+		Posicao position = sourcePosition.toPosition();
+
+		posicaoOrigemValida(position);
+
+		return tabuleiro.piece(position).movimentosPossiveis();
+
+	}
+	private void posicaoDestinoValida(Posicao atual, Posicao destino){
+		if(!tabuleiro.piece(atual).possivelMovimento(destino)) {
+			//se para a peca de origem o destino nao é um movimento possivel
+			//nao posso mexer  para la
+			throw new ExcecaoXadrez("A peca de origem nao pode se mover para o destino");
+			
+		}
+	
+	} 
+	
 	
 	private void placeNewPiece(char coluna, int linha, PecaXadrez peca) {
 		tabuleiro.lugarPeca(peca, new PosicaoXadrez(coluna, linha).toPosition());

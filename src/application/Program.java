@@ -24,6 +24,12 @@ public class Program {
 			System.out.println("Origem: ");
 			PosicaoXadrez origem = Interface.lerPosicao(sc);
 			
+			boolean[][] possibleMoves = partidaXadrez.possibleMoves(origem);
+			Interface.clearScreen();
+			//colorindo as possiveis posicoes
+			Interface.imprimeTabuleiro(partidaXadrez.getPecas(),possibleMoves);
+
+			
 			System.out.println();
 			System.out.println("Destino: ");
 			PosicaoXadrez destino = Interface.lerPosicao(sc);
