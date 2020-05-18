@@ -1,5 +1,8 @@
 package xadrez;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import peca.xadrez.Rei;
 import peca.xadrez.Torre;
 import tabuleiro.Piece;
@@ -11,20 +14,22 @@ public class PartidaXadrez {
 	private int vez;
 	private Color atualJogador;
 	private Tabuleiro tabuleiro;
+	private List<Piece> pecasNoTabuleiro = new ArrayList<>();
+	private List<Piece> pecasCapturadas = new ArrayList<>();
 
 	public PartidaXadrez() {
 		// dizer o tamanho
 		// crio o tabuleiro e inicia o jogo
 		tabuleiro = new Tabuleiro(8, 8);
-		vez=1;
+		vez = 1;
 		atualJogador = Color.WHITE;
 		iniciarJogo();
 	}
-	
+
 	public int gerVez() {
 		return vez;
 	}
-	
+
 	public Color atualJogador() {
 		return atualJogador;
 	}
@@ -43,62 +48,67 @@ public class PartidaXadrez {
 		}
 		return matriz;
 	}
-	
-	public boolean [][] possibleMoves(PosicaoXadrez posicaoOrigem){
+
+	public boolean[][] possibleMoves(PosicaoXadrez posicaoOrigem) {
 		Posicao posicao = posicaoOrigem.toPosition();
-		//validar posicao
-		//imprimir posicao de 
+		// validar posicao
+		// imprimir posicao de
 		posicaoOrigemValida(posicao);
 		return tabuleiro.piece(posicao).movimentosPossiveis();
 	}
+
 	public PecaXadrez executarMovimento(PosicaoXadrez atualPosicao, PosicaoXadrez posicaoDestino) {
-		
+
 		Posicao atual = atualPosicao.toPosition();
 		Posicao destino = posicaoDestino.toPosition();
 		posicaoOrigemValida(atual);
-		posicaoDestinoValida(atual,destino);
-		
-		Piece pecaCapturada = fazerMovimento(atual,destino);
-		
+		posicaoDestinoValida(atual, destino);
+
+		Piece pecaCapturada = fazerMovimento(atual, destino);
+
 		nextTurn();
-		return (PecaXadrez)pecaCapturada;
-		
-		//validar posicao
-		//makemove realizar movimento
-		
+		return (PecaXadrez) pecaCapturada;
+
+		// validar posicao
+		// makemove realizar movimento
+
 	}
-	
-	private Piece fazerMovimento(Posicao atual, Posicao destino ) {
+
+	private Piece fazerMovimento(Posicao atual, Posicao destino) {
 		Piece p = tabuleiro.removePiece(atual);
-		//remover possivel peca que esteja na posicao de destino
+		// remover possivel peca que esteja na posicao de destino
 		Piece pecaCapturada = tabuleiro.removePiece(destino);
 		tabuleiro.lugarPeca(p, destino);
+		//tira da origem poe no destino
+		if(pecaCapturada != null) {
+			pecasNoTabuleiro.remove(pecaCapturada);
+			pecasCapturadas.add(pecaCapturada);
+		}
 		return pecaCapturada;
 	}
-	
+
 	private void posicaoOrigemValida(Posicao posicao) {
-		if(!tabuleiro.eUmaPeca(posicao)) {
+		if (!tabuleiro.eUmaPeca(posicao)) {
 			throw new ExcecaoXadrez("Nao existe um peca aqui");
-			
+
 		}
-		
-		if(atualJogador != ((PecaXadrez)tabuleiro.piece(posicao)).getColor()) {
-			//peca adversaria, nao pode move-la
+
+		if (atualJogador != ((PecaXadrez) tabuleiro.piece(posicao)).getColor()) {
+			// peca adversaria, nao pode move-la
 			throw new ExcecaoXadrez("A peca escolhida nao e sua");
-			
+
 		}
-		
-		//se nao tiver nenhum movimento possivel
-		
-		if(!tabuleiro.piece(posicao).eUmMovimentoPossivel()) {
+
+		// se nao tiver nenhum movimento possivel
+
+		if (!tabuleiro.piece(posicao).eUmMovimentoPossivel()) {
 			throw new ExcecaoXadrez("Nao existe movimentos possiveis para essa peca");
-			
-			
+
 		}
-		
+
 	}
-	
-	public boolean[][] movimentosPossiveis (PosicaoXadrez sourcePosition) {
+
+	public boolean[][] movimentosPossiveis(PosicaoXadrez sourcePosition) {
 
 		Posicao position = sourcePosition.toPosition();
 
@@ -107,25 +117,26 @@ public class PartidaXadrez {
 		return tabuleiro.piece(position).movimentosPossiveis();
 
 	}
-	private void posicaoDestinoValida(Posicao atual, Posicao destino){
-		if(!tabuleiro.piece(atual).possivelMovimento(destino)) {
-			//se para a peca de origem o destino nao é um movimento possivel
-			//nao posso mexer  para la
+
+	private void posicaoDestinoValida(Posicao atual, Posicao destino) {
+		if (!tabuleiro.piece(atual).possivelMovimento(destino)) {
+			// se para a peca de origem o destino nao é um movimento possivel
+			// nao posso mexer para la
 			throw new ExcecaoXadrez("A peca de origem nao pode se mover para o destino");
-			
+
 		}
-	
+
 	}
+
 	private void nextTurn() {
 		vez++;
-		atualJogador =(atualJogador == Color.WHITE) ? Color.BLACK : Color.WHITE;
-		
+		atualJogador = (atualJogador == Color.WHITE) ? Color.BLACK : Color.WHITE;
+
 	}
-	
-	
+
 	private void placeNewPiece(char coluna, int linha, PecaXadrez peca) {
 		tabuleiro.lugarPeca(peca, new PosicaoXadrez(coluna, linha).toPosition());
-
+		pecasNoTabuleiro.add(peca);
 	}
 
 	private void iniciarJogo() {
@@ -154,5 +165,5 @@ public class PartidaXadrez {
 		placeNewPiece('d', 8, new Rei(tabuleiro, Color.BLACK));
 
 	}
-	
+
 }
