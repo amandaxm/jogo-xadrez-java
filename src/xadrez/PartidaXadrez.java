@@ -102,8 +102,10 @@ public class PartidaXadrez {
 	}
 
 	private Piece fazerMovimento(Posicao atual, Posicao destino) {
-		Piece p = tabuleiro.removePiece(atual);
+		PecaXadrez p = (PecaXadrez)tabuleiro.removePiece(atual);
 		// remover possivel peca que esteja na posicao de destino
+		p.increaseMoveCount();
+
 		Piece pecaCapturada = tabuleiro.removePiece(destino);
 		tabuleiro.lugarPeca(p, destino);
 		// tira da origem poe no destino
@@ -115,9 +117,10 @@ public class PartidaXadrez {
 	}
 
 	private void desfazerMovimento(Posicao origem, Posicao destino, Piece pecaCapturada) {
-		Piece p = tabuleiro.removePiece(destino);
-		tabuleiro.lugarPeca(p, origem);// devolve peca para posição de origem
+		PecaXadrez p = (PecaXadrez)tabuleiro.removePiece(destino);
+		p.decreaseMoveCount();
 
+		tabuleiro.lugarPeca(p, origem);// devolve peca para posição de origem
 		if (pecaCapturada != null) {
 			// se tiver capturado alguma peca devlver
 			tabuleiro.lugarPeca(pecaCapturada, origem);

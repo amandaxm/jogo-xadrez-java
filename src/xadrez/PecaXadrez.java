@@ -7,6 +7,7 @@ import tabuleiro.Tabuleiro;
 public abstract class PecaXadrez extends Piece {
 	
 	private Color color;
+	private int moveCount;
 
 	public PecaXadrez(Tabuleiro tabuleiro, Color color) {
 		super(tabuleiro);
@@ -18,6 +19,18 @@ public abstract class PecaXadrez extends Piece {
 	}
 	public Color getColor() {
 		return color;
+	}
+	public int getMoveCount() {
+		return moveCount;
+	}
+	public void increaseMoveCount() {
+		moveCount++;
+		
+	}
+	
+	public void decreaseMoveCount() {
+		moveCount--;
+		
 	}
 	
 	protected boolean isThereOpponentPiece(Posicao posicao) {
