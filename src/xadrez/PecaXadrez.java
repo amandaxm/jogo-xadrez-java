@@ -12,7 +12,10 @@ public abstract class PecaXadrez extends Piece {
 		super(tabuleiro);
 		this.color = color;
 	}
-
+	public PosicaoXadrez getPosicaoXadrez() {
+		
+		return PosicaoXadrez.paraPosicao(posicao);
+	}
 	public Color getColor() {
 		return color;
 	}

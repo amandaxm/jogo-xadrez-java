@@ -85,7 +85,10 @@ public class Interface {
 		System.out.println();
 		System.out.println("Jogada: " + partidaXadrez.gerVez());
 		System.out.println("Aguardando jogador: " + partidaXadrez.atualJogador());
-
+		if(partidaXadrez.getCheque()) {
+			
+		System.out.println("CHEQUE!");	
+		}
 	}
 
 	public static void imprimeTabuleiro(PecaXadrez[][] pecas) {
