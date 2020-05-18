@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import peca.xadrez.Bispo;
+import peca.xadrez.Cavalo;
 import peca.xadrez.Peao;
 import peca.xadrez.Rei;
 import peca.xadrez.Torre;
@@ -104,7 +105,7 @@ public class PartidaXadrez {
 	}
 
 	private Piece fazerMovimento(Posicao atual, Posicao destino) {
-		PecaXadrez p = (PecaXadrez)tabuleiro.removePiece(atual);
+		PecaXadrez p = (PecaXadrez) tabuleiro.removePiece(atual);
 		// remover possivel peca que esteja na posicao de destino
 		p.increaseMoveCount();
 
@@ -119,7 +120,7 @@ public class PartidaXadrez {
 	}
 
 	private void desfazerMovimento(Posicao origem, Posicao destino, Piece pecaCapturada) {
-		PecaXadrez p = (PecaXadrez)tabuleiro.removePiece(destino);
+		PecaXadrez p = (PecaXadrez) tabuleiro.removePiece(destino);
 
 		tabuleiro.lugarPeca(p, origem);// devolve peca para posição de origem
 		if (pecaCapturada != null) {
@@ -260,8 +261,10 @@ public class PartidaXadrez {
 		placeNewPiece('c', 1, new Bispo(tabuleiro, Color.WHITE));
 
 		placeNewPiece('e', 1, new Rei(tabuleiro, Color.WHITE));
-		
+
 		placeNewPiece('e', 2, new Peao(tabuleiro, Color.WHITE));
+
+		placeNewPiece('b', 1, new Cavalo(tabuleiro, Color.WHITE));
 
 		placeNewPiece('b', 8, new Torre(tabuleiro, Color.BLACK));
 
