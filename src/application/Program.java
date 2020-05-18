@@ -19,7 +19,7 @@ public class Program {
 		List<PecaXadrez> capturada = new ArrayList<>();
 		// funcao para imprimir as pecas dessa partida
 		
-		while (true) {
+		while (!partidaXadrez.getChequeMate()) {
 			try {
 				Interface.clearScreen();
 				Interface.imprimirPartida(partidaXadrez, capturada);
@@ -51,6 +51,9 @@ public class Program {
 
 			}
 		}
+		Interface.clearScreen();
+		Interface.imprimirPartida(partidaXadrez, capturada);
+		
 	}
 
 }

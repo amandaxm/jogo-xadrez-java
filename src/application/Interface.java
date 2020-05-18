@@ -85,10 +85,17 @@ public class Interface {
 		System.out.println();
 		System.out.println("Jogada: " + partidaXadrez.gerVez());
 		System.out.println("Aguardando jogador: " + partidaXadrez.atualJogador());
-		if(partidaXadrez.getCheque()) {
-			
-		System.out.println("CHEQUE!");	
+		if (!partidaXadrez.getChequeMate()) {
+
+			if (partidaXadrez.getCheque()) {
+
+				System.out.println("CHEQUE!");
+			}
+		} else {
+			System.out.println("CHEQUEMATE ");
+			System.out.println("Vencedor: " + partidaXadrez.atualJogador());
 		}
+
 	}
 
 	public static void imprimeTabuleiro(PecaXadrez[][] pecas) {
@@ -164,8 +171,10 @@ public class Interface {
 	}
 
 	private static void imprimirPecasCapturadas(List<PecaXadrez> capturada) {
-		List<PecaXadrez> white = capturada.stream().filter(x -> x.getColor() == Color.WHITE).collect(Collectors.toList());//filtrando as pecas com cor branca
-		List<PecaXadrez> black = capturada.stream().filter(x -> x.getColor() == Color.BLACK).collect(Collectors.toList());//filtrando as pecas com cor branca
+		List<PecaXadrez> white = capturada.stream().filter(x -> x.getColor() == Color.WHITE)
+				.collect(Collectors.toList());// filtrando as pecas com cor branca
+		List<PecaXadrez> black = capturada.stream().filter(x -> x.getColor() == Color.BLACK)
+				.collect(Collectors.toList());// filtrando as pecas com cor branca
 
 		System.out.println("Pecas capturadas: ");
 		System.out.print("Brancas: ");
@@ -177,8 +186,6 @@ public class Interface {
 		System.out.print(ANSI_YELLOW);
 		System.out.print(Arrays.toString(black.toArray()));
 		System.out.print(ANSI_RESET);
-		
-		
-		
+
 	}
 }
