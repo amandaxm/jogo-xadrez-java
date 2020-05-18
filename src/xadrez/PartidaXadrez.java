@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import peca.xadrez.Bispo;
 import peca.xadrez.Cavalo;
+import peca.xadrez.Dama;
 import peca.xadrez.Peao;
 import peca.xadrez.Rei;
 import peca.xadrez.Torre;
@@ -263,6 +264,8 @@ public class PartidaXadrez {
 		placeNewPiece('e', 1, new Rei(tabuleiro, Color.WHITE));
 
 		placeNewPiece('e', 2, new Peao(tabuleiro, Color.WHITE));
+
+		placeNewPiece('d', 1, new Dama(tabuleiro, Color.WHITE));
 
 		placeNewPiece('b', 1, new Cavalo(tabuleiro, Color.WHITE));
 
