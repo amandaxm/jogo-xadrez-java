@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import peca.xadrez.Bispo;
 import peca.xadrez.Peao;
 import peca.xadrez.Rei;
 import peca.xadrez.Torre;
@@ -256,7 +257,7 @@ public class PartidaXadrez {
 	private void iniciarJogo() {
 		placeNewPiece('h', 7, new Torre(tabuleiro, Color.WHITE));
 
-		placeNewPiece('d', 1, new Torre(tabuleiro, Color.WHITE));
+		placeNewPiece('c', 1, new Bispo(tabuleiro, Color.WHITE));
 
 		placeNewPiece('e', 1, new Rei(tabuleiro, Color.WHITE));
 		
@@ -265,6 +266,8 @@ public class PartidaXadrez {
 		placeNewPiece('b', 8, new Torre(tabuleiro, Color.BLACK));
 
 		placeNewPiece('a', 8, new Rei(tabuleiro, Color.BLACK));
+
+		placeNewPiece('c', 8, new Bispo(tabuleiro, Color.BLACK));
 
 	}
 
