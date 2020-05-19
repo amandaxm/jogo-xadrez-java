@@ -23,6 +23,7 @@ public class PartidaXadrez {
 	private List<Piece> pecasCapturadas = new ArrayList<>();
 	private boolean cheque;// inicia com false
 	private boolean chequeMate;
+	private PecaXadrez enPassantVulnerble;
 
 	public PartidaXadrez() {
 		// dizer o tamanho
@@ -31,6 +32,11 @@ public class PartidaXadrez {
 		vez = 1;
 		atualJogador = Color.WHITE;
 		iniciarJogo();
+	}
+
+	public PecaXadrez getEnPassantVulnerable() {
+
+		return enPassantVulnerble;
 	}
 
 	public boolean getCheque() {
@@ -88,6 +94,7 @@ public class PartidaXadrez {
 			throw new ExcecaoXadrez("Voce nao pode colocar seu rei em cheque :)");
 
 		}
+		PecaXadrez pecaMovida = (PecaXadrez) tabuleiro.piece(destino);
 		// testar se o oponente ficou em cheque
 		cheque = (testarCheque(oponente(atualJogador))) ? true : false;
 
@@ -96,6 +103,20 @@ public class PartidaXadrez {
 			chequeMate = true;
 		} else {
 			nextTurn();
+
+		}
+		// #specialmove en passant
+
+		if (pecaMovida instanceof Peao
+				&& (destino.getLinha() == atual.getLinha() - 2 || destino.getLinha() == atual.getLinha() + 2)) {
+
+			enPassantVulnerble = pecaMovida;
+
+		}
+
+		else {
+
+			enPassantVulnerble = null;
 
 		}
 		return (PecaXadrez) pecaCapturada;
@@ -148,8 +169,38 @@ public class PartidaXadrez {
 			torre.increaseMoveCount();
 
 		}
+		// #specialmove en passant
+
+		if (p instanceof Peao) {
+
+			if (atual.getColuna() != destino.getColuna() && pecaCapturada == null) {
+
+				Posicao pawnPosition;
+
+				if (p.getColor() == Color.WHITE) {
+
+					pawnPosition = new Posicao(destino.getLinha() + 1, destino.getColuna());
+
+				}
+
+				else {
+
+					pawnPosition = new Posicao(destino.getLinha() - 1, destino.getColuna());
+
+				}
+
+				pecaCapturada = tabuleiro.removePiece(pawnPosition);
+
+				pecasCapturadas.add(pecaCapturada);
+
+				pecasNoTabuleiro.remove(pecaCapturada);
+
+			}
+
+		}
 
 		return pecaCapturada;
+
 	}
 
 	private void desfazerMovimento(Posicao origem, Posicao destino, Piece pecaCapturada) {
@@ -192,6 +243,29 @@ public class PartidaXadrez {
 			tabuleiro.lugarPeca(Torre, atualT);
 
 			Torre.decreaseMoveCount();
+
+		}
+		if (p instanceof Peao) {
+
+			if (origem.getColuna() != destino.getColuna() && pecaCapturada == enPassantVulnerble) {
+
+				PecaXadrez peao = (PecaXadrez) tabuleiro.removePiece(destino);
+				Posicao pawnPosition;
+
+				if (p.getColor() == Color.WHITE) {
+
+					pawnPosition = new Posicao(3, destino.getColuna());
+
+				}
+
+				else {
+
+					pawnPosition = new Posicao(4, destino.getColuna());
+
+				}
+
+				tabuleiro.lugarPeca(peao, pawnPosition);
+			}
 
 		}
 
@@ -321,50 +395,71 @@ public class PartidaXadrez {
 	}
 
 	private void iniciarJogo() {
-		placeNewPiece('b', 1, new Cavalo(tabuleiro, Color.WHITE));
+		placeNewPiece('a', 1, new Torre(tabuleiro, Color.WHITE));
 
+        placeNewPiece('b', 1, new Cavalo(tabuleiro, Color.WHITE));
 
         placeNewPiece('c', 1, new Bispo(tabuleiro, Color.WHITE));
 
-
         placeNewPiece('d', 1, new Dama(tabuleiro, Color.WHITE));
-
-
-
 
         placeNewPiece('e', 1, new Rei(tabuleiro, Color.WHITE, this));
 
-
         placeNewPiece('f', 1, new Bispo(tabuleiro, Color.WHITE));
-
 
         placeNewPiece('g', 1, new Cavalo(tabuleiro, Color.WHITE));
 
-
         placeNewPiece('h', 1, new Torre(tabuleiro, Color.WHITE));
 
+        placeNewPiece('a', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+        placeNewPiece('b', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+        placeNewPiece('c', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+        placeNewPiece('d', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+        placeNewPiece('e', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+        placeNewPiece('f', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+        placeNewPiece('g', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+        placeNewPiece('h', 2, new Peao(tabuleiro, Color.WHITE, this));
+
+
+
+        placeNewPiece('a', 8, new Torre(tabuleiro, Color.BLACK));
 
         placeNewPiece('b', 8, new Cavalo(tabuleiro, Color.BLACK));
 
-
         placeNewPiece('c', 8, new Bispo(tabuleiro, Color.BLACK));
-
 
         placeNewPiece('d', 8, new Dama(tabuleiro, Color.BLACK));
 
-
-
-
         placeNewPiece('e', 8, new Rei(tabuleiro, Color.BLACK, this));
-
 
         placeNewPiece('f', 8, new Bispo(tabuleiro, Color.BLACK));
 
-
         placeNewPiece('g', 8, new Cavalo(tabuleiro, Color.BLACK));
 
-
         placeNewPiece('h', 8, new Torre(tabuleiro, Color.BLACK));
-	}
 
+        placeNewPiece('a', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+        placeNewPiece('b', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+        placeNewPiece('c', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+        placeNewPiece('d', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+        placeNewPiece('e', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+        placeNewPiece('f', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+        placeNewPiece('g', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+        placeNewPiece('h', 7, new Peao(tabuleiro, Color.BLACK, this));
+
+	}
 }
