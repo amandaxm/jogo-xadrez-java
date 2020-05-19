@@ -13,7 +13,7 @@ import peca.xadrez.Torre;
 import tabuleiro.Piece;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
-
+import java.security.InvalidParameterException;
 public class PartidaXadrez {
 	// coração do jogo
 	private int vez;
@@ -24,6 +24,7 @@ public class PartidaXadrez {
 	private boolean cheque;// inicia com false
 	private boolean chequeMate;
 	private PecaXadrez enPassantVulnerble;
+	private PecaXadrez promocao;
 
 	public PartidaXadrez() {
 		// dizer o tamanho
@@ -32,6 +33,10 @@ public class PartidaXadrez {
 		vez = 1;
 		atualJogador = Color.WHITE;
 		iniciarJogo();
+	}
+
+	public PecaXadrez getPromocao() {
+		return promocao;
 	}
 
 	public PecaXadrez getEnPassantVulnerable() {
@@ -95,6 +100,18 @@ public class PartidaXadrez {
 
 		}
 		PecaXadrez pecaMovida = (PecaXadrez) tabuleiro.piece(destino);
+
+		// promocao peao
+		promocao = null;
+		if (pecaMovida instanceof Peao) {
+			if ((pecaMovida.getColor() == Color.WHITE && destino.getLinha() == 0)
+					|| (pecaMovida.getColor() == Color.BLACK && destino.getLinha() == 7)) {
+				promocao = (PecaXadrez) tabuleiro.piece(destino);
+				promocao = substituirPecaPromovida("D");
+
+			}
+
+		}
 		// testar se o oponente ficou em cheque
 		cheque = (testarCheque(oponente(atualJogador))) ? true : false;
 
@@ -389,6 +406,51 @@ public class PartidaXadrez {
 		return true;
 	}
 
+	public PecaXadrez substituirPecaPromovida(String type) {
+
+		if (promocao == null) {
+
+			throw new IllegalStateException("Essa peca nao pode ser promovida");
+
+		}
+
+		if (!type.equals("B") && !type.equals("C") && !type.equals("T") & !type.equals("D")) {
+
+			throw new InvalidParameterException("Tipo inválido");
+
+		}
+
+		Posicao pos = promocao.getPosicaoXadrez().toPosition();
+
+		Piece p = tabuleiro.removePiece(pos);
+
+		pecasNoTabuleiro.remove(p);
+
+		PecaXadrez newPiece = novaPeca(type, promocao.getColor());
+
+		tabuleiro.lugarPeca(newPiece, pos);
+
+		pecasNoTabuleiro.add(newPiece);
+
+		return newPiece;
+
+	}
+
+	private PecaXadrez novaPeca(String type, Color color) {
+
+		if (type.equals("B"))
+			return new Bispo(tabuleiro, color);
+
+		if (type.equals("C"))
+			return new Cavalo(tabuleiro, color);
+
+		if (type.equals("D"))
+			return new Dama(tabuleiro, color);
+
+		return new Torre(tabuleiro, color);
+
+	}
+
 	private void placeNewPiece(char coluna, int linha, PecaXadrez peca) {
 		tabuleiro.lugarPeca(peca, new PosicaoXadrez(coluna, linha).toPosition());
 		pecasNoTabuleiro.add(peca);
@@ -397,69 +459,67 @@ public class PartidaXadrez {
 	private void iniciarJogo() {
 		placeNewPiece('a', 1, new Torre(tabuleiro, Color.WHITE));
 
-        placeNewPiece('b', 1, new Cavalo(tabuleiro, Color.WHITE));
+		placeNewPiece('b', 1, new Cavalo(tabuleiro, Color.WHITE));
 
-        placeNewPiece('c', 1, new Bispo(tabuleiro, Color.WHITE));
+		placeNewPiece('c', 1, new Bispo(tabuleiro, Color.WHITE));
 
-        placeNewPiece('d', 1, new Dama(tabuleiro, Color.WHITE));
+		placeNewPiece('d', 1, new Dama(tabuleiro, Color.WHITE));
 
-        placeNewPiece('e', 1, new Rei(tabuleiro, Color.WHITE, this));
+		placeNewPiece('e', 1, new Rei(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('f', 1, new Bispo(tabuleiro, Color.WHITE));
+		placeNewPiece('f', 1, new Bispo(tabuleiro, Color.WHITE));
 
-        placeNewPiece('g', 1, new Cavalo(tabuleiro, Color.WHITE));
+		placeNewPiece('g', 1, new Cavalo(tabuleiro, Color.WHITE));
 
-        placeNewPiece('h', 1, new Torre(tabuleiro, Color.WHITE));
+		placeNewPiece('h', 1, new Torre(tabuleiro, Color.WHITE));
 
-        placeNewPiece('a', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('a', 2, new Peao(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('b', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('b', 2, new Peao(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('c', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('c', 2, new Peao(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('d', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('d', 2, new Peao(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('e', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('e', 2, new Peao(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('f', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('f', 2, new Peao(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('g', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('g', 2, new Peao(tabuleiro, Color.WHITE, this));
 
-        placeNewPiece('h', 2, new Peao(tabuleiro, Color.WHITE, this));
+		placeNewPiece('h', 2, new Peao(tabuleiro, Color.WHITE, this));
 
+		placeNewPiece('a', 8, new Torre(tabuleiro, Color.BLACK));
 
+		placeNewPiece('b', 8, new Cavalo(tabuleiro, Color.BLACK));
 
-        placeNewPiece('a', 8, new Torre(tabuleiro, Color.BLACK));
+		placeNewPiece('c', 8, new Bispo(tabuleiro, Color.BLACK));
 
-        placeNewPiece('b', 8, new Cavalo(tabuleiro, Color.BLACK));
+		placeNewPiece('d', 8, new Dama(tabuleiro, Color.BLACK));
 
-        placeNewPiece('c', 8, new Bispo(tabuleiro, Color.BLACK));
+		placeNewPiece('e', 8, new Rei(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('d', 8, new Dama(tabuleiro, Color.BLACK));
+		placeNewPiece('f', 8, new Bispo(tabuleiro, Color.BLACK));
 
-        placeNewPiece('e', 8, new Rei(tabuleiro, Color.BLACK, this));
+		placeNewPiece('g', 8, new Cavalo(tabuleiro, Color.BLACK));
 
-        placeNewPiece('f', 8, new Bispo(tabuleiro, Color.BLACK));
+		placeNewPiece('h', 8, new Torre(tabuleiro, Color.BLACK));
 
-        placeNewPiece('g', 8, new Cavalo(tabuleiro, Color.BLACK));
+		placeNewPiece('a', 7, new Peao(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('h', 8, new Torre(tabuleiro, Color.BLACK));
+		placeNewPiece('b', 7, new Peao(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('a', 7, new Peao(tabuleiro, Color.BLACK, this));
+		placeNewPiece('c', 7, new Peao(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('b', 7, new Peao(tabuleiro, Color.BLACK, this));
+		placeNewPiece('d', 7, new Peao(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('c', 7, new Peao(tabuleiro, Color.BLACK, this));
+		placeNewPiece('e', 7, new Peao(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('d', 7, new Peao(tabuleiro, Color.BLACK, this));
+		placeNewPiece('f', 7, new Peao(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('e', 7, new Peao(tabuleiro, Color.BLACK, this));
+		placeNewPiece('g', 7, new Peao(tabuleiro, Color.BLACK, this));
 
-        placeNewPiece('f', 7, new Peao(tabuleiro, Color.BLACK, this));
-
-        placeNewPiece('g', 7, new Peao(tabuleiro, Color.BLACK, this));
-
-        placeNewPiece('h', 7, new Peao(tabuleiro, Color.BLACK, this));
+		placeNewPiece('h', 7, new Peao(tabuleiro, Color.BLACK, this));
 
 	}
 }

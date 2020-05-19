@@ -14,7 +14,7 @@ public class Torre extends PecaXadrez {
 
 	@Override
 	public String toString() {
-		return "R";// vai entrar na hora de imprimir o tabuleiro
+		return "T";// vai entrar na hora de imprimir o tabuleiro
 
 	}
 
