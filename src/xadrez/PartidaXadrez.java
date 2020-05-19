@@ -13,7 +13,6 @@ import peca.xadrez.Torre;
 import tabuleiro.Piece;
 import tabuleiro.Posicao;
 import tabuleiro.Tabuleiro;
-import java.security.InvalidParameterException;
 public class PartidaXadrez {
 	// coração do jogo
 	private int vez;
@@ -416,8 +415,7 @@ public class PartidaXadrez {
 
 		if (!type.equals("B") && !type.equals("C") && !type.equals("T") & !type.equals("D")) {
 
-			throw new InvalidParameterException("Tipo inválido");
-
+			return promocao;
 		}
 
 		Posicao pos = promocao.getPosicaoXadrez().toPosition();

@@ -18,7 +18,7 @@ public class Program {
 		PartidaXadrez partidaXadrez = new PartidaXadrez();
 		List<PecaXadrez> capturada = new ArrayList<>();
 		// funcao para imprimir as pecas dessa partida
-		
+
 		while (!partidaXadrez.getChequeMate()) {
 			try {
 				Interface.clearScreen();
@@ -38,15 +38,23 @@ public class Program {
 
 				PecaXadrez capturarPeca = partidaXadrez.executarMovimento(origem, destino);
 
-				if(capturarPeca != null) {
+				if (capturarPeca != null) {
 					capturada.add(capturarPeca);
 				}
-				if(partidaXadrez.getPromocao()!= null) {
-					
-				System.out.println("Entre com a peca para promocao (B/C/D/T): ");
-				String tipo= sc.nextLine();
-				partidaXadrez.substituirPecaPromovida(tipo);
-				
+				if (partidaXadrez.getPromocao() != null) {
+
+					System.out.println("Entre com a peca para promocao (B/C/D/T): ");
+					String type = sc.nextLine().toUpperCase();
+
+					while (!type.equals("B") && !type.equals("N") && !type.equals("R") & !type.equals("Q")) {
+
+						System.out.print("Invalid value! Enter piece for promotion (B/N/R/Q): ");
+
+						type = sc.nextLine().toUpperCase();
+
+					}
+					partidaXadrez.substituirPecaPromovida(type);
+
 				}
 			} catch (ExcecaoXadrez e) {
 				System.out.println(e.getMessage());
@@ -60,7 +68,7 @@ public class Program {
 		}
 		Interface.clearScreen();
 		Interface.imprimirPartida(partidaXadrez, capturada);
-		
+
 	}
 
 }
